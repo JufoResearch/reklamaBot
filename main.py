@@ -6,7 +6,7 @@ import shutil
 import time
 
 print("hello")
-bot = telebot.TeleBot('5227474901:AAGj1aSOg85F9f6MWyPFUkLIFZTfUfSwOdw') # Токен бота
+bot = telebot.TeleBot('') # Токен бота
 
 db = sqlite3.connect('base.db', check_same_thread=False) # Открываем базу данных
 sql = db.cursor()
@@ -14,7 +14,7 @@ sql = db.cursor()
 chat = [] # Список chat_id которые подали заявку и ожидают от нас ответа
 dict_with_paths_to_images = {}
 
-TO_CHAT_ID = -1001572818047
+TO_CHAT_ID = # Указываем чат для пересыла заявки
 
 
 
@@ -75,10 +75,7 @@ def question(call):
         ans9 = anss[10]
         ans10 = anss[11]
         username = anss[12]
-        key = telebot.types.InlineKeyboardMarkup()
-        key1 = telebot.types.InlineKeyboardButton(text='Принять✅', callback_data='accepted')
-        key2 = telebot.types.InlineKeyboardButton(text='Отклонить❌', callback_data='reject')
-        key.add(key1, key2)
+    
         keyboard = telebot.types.InlineKeyboardMarkup()
         like_button = telebot.types.InlineKeyboardButton(text="Разместить объявление", url='t.me/PokupkaReklami_bot', callback_data='like')
         keyboard.add(like_button)
@@ -100,21 +97,6 @@ def question(call):
                            caption=f'Объявление от @{username}:\n\n{ans1}\n*Площадка: *{ans2}\n*Описание: *{ans3}\n\n*Стоимость: *{ans5} руб.\n*Целевая аудитория:*\n{ans6}, {ans8} \n*Город(а): *{ans9}\n*Продукт: *{ans10}',
                            parse_mode="Markdown", reply_markup=keyboard)
             shutil.rmtree(str(call.message.chat.id))
-
-
-    if call.data == 'accepted':
-        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                              text="Вы приняли заявку.✅") # Ответ если вы приняли заявку
-        msm = chat[0]
-        bot.send_message(msm, 'Поздравляю, вы приняты в нашу команду!✅') # Ответ тому кого вы приняли
-        del chat[0]
-    elif call.data == 'reject':
-        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                              text="Вы отклонили заявку.❌") # Ответ если вы отклонили заявку
-        msm = chat[0]
-        bot.send_message(msm, 'Извините, вы нам не подходите.❌') # Ответ тому кого вы отклонили
-        del chat[0]
-
 
 def question2(message):
     question1 = message.text
